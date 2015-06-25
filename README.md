@@ -1,0 +1,2 @@
+# pomegranate
+Lineage tree simulator
