@@ -8,9 +8,9 @@ POMEGRANATE: Cancer cell lineage tree simulator
 
 ##### TREE SIMULATION
 
-```-t, --nTrees <arg>      ``` Number of trees to simulate (default: 100)  
-```-i, --nIter <arg>       ``` Number of tree growth iterations (default: 50)  
-```-snv, --probSNV <arg>   ``` Per node probablity of producing a descendant cell population with an acquired SSNV in a tree growth iteration (default: 0.15)  
+```-t, --nTrees <arg>``` Number of trees to simulate (default: 100)  
+```-i, --nIter <arg>``` Number of tree growth iterations (default: 50)  
+```-snv, --probSNV <arg>``` Per node probablity of producing a descendant cell population with an acquired SSNV in a tree growth iteration (default: 0.15)  
 ```-cnv, --probCNV <arg>   ``` Per node probablity of producing a descendant cell population with an acquired CNV in a tree growth iteration (default: 0)  
 ```-probDeath <arg>        ``` true, "Probablity of a cell population death in each tree growth iteration (default: 0.06)  
 ```-maxPopulationSize <arg>``` Max size of a cell population (default: 1000000)  
