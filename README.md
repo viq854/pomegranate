@@ -39,3 +39,31 @@ POMEGRANATE: Cancer cell lineage tree simulator
 
 ```-v, --verbose``` Verbose mode  
 ```-h, --help``` Print usage  
+
+### How to Run
+
+From the /release directory:
+
+```
+./pomegranate -dir <output>
+```
+### Examples
+
+### Output 
+
+### Output Visualization
+
+
+
+### System Requirements
+
+Java Runtime Environment (JRE) 1.6  
+(Optional) Graphviz: for output tree and sampling visualization 
+
+###License
+
+MIT License 
+
+###Support
+
+For help running the program or any questions/suggestions/bug reports, please contact viq@stanford.edu
