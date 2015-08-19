@@ -11,7 +11,7 @@ The program outputs the produced trees, sampled subclones, and the per sample VA
 
 Simulated tree example with sampling: 
 
-![tree]( https://github.com/viq854/pomegranate/blob/master/data/examples/t1_s10.pdf "Simulated tree")
+![tree]( https://github.com/viq854/pomegranate/blob/master/data/examples/t1_s10.png "Simulated tree")
 
 ### Program Parameters
 
