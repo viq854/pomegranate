@@ -38,7 +38,7 @@ Example of a simulated tree with 14 tumor samples:
 ```-sampleSize <arg>``` Sample size (default: 100000)  
 ```-e <arg>``` Sequencing error (default: 0.001)  
 ```-minNC <arg>``` Minimum percentage of normal contamination per sample; the percentage will be randomly generated from the range [minNC maxNC] for each sample (default: 0) (default: 0)  
-```-maxNC <arg>``` Maximum percentage of normal contamination per sample; if maxNC < minNC, maxNC will be automatically set to minNC; the percentage will be randomly generated from the range [minNC maxNC] for each sample (default: 0) 
+```-maxNC <arg>``` Maximum percentage of normal contamination per sample; if maxNC < minNC, maxNC will be automatically set to minNC; the percentage will be randomly generated from the range [minNC maxNC] for each sample (default: 20) 
 		
 ##### INPUT/OUTPUT/VISUALIZATION  
 
