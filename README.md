@@ -9,9 +9,13 @@ Multiple samples can then be collected from the produced lineage tree(s). Each s
 
 The program outputs the produced trees, sampled subclones, and the per sample VAFs of each SNV for specified coverage(s), sequencing accuracy, and normal contamination.
 
-Simulated tree example with sampling: 
+Example of a simulated tree with 9 tumor samples (indicated by different colors); each node represents a cell population that contains every mutation in its lineage; gray indicates dead cell populations.: 
 
-![tree]( https://github.com/viq854/pomegranate/blob/master/data/examples/t1_s10.png "Simulated tree")
+![tree]( https://github.com/viq854/pomegranate/blob/master/data/examples/t3_s10.png "Simulated tree example")
+
+Example of a simulated tree with 14 tumor samples: 
+
+![tree]( https://github.com/viq854/pomegranate/blob/master/data/examples/t1_s15.png "Simulated tree example")
 
 ### Program Parameters
 
