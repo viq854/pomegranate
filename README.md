@@ -9,7 +9,7 @@ Multiple samples can then be collected from the produced lineage tree(s). Each s
 
 The program outputs the produced trees, sampled subclones, and the per sample VAFs of each SNV for specified coverage(s), sequencing accuracy, and normal contamination.
 
-Example of a simulated tree with 9 tumor samples (indicated by different colors); each node represents a cell population that contains every mutation in its lineage; gray indicates dead cell populations.: 
+Example of a simulated tree with 9 collected tumor samples indicated by different colors; each node represents a cell population that contains every mutation in its lineage; gray indicates dead cell populations.: 
 
 ![tree]( https://github.com/viq854/pomegranate/blob/master/data/examples/t3_s10.png "Simulated tree example")
 
@@ -24,10 +24,11 @@ Example of a simulated tree with 14 tumor samples:
 ```-t, --nTrees <arg>``` Number of trees to simulate (default: 100)  
 ```-i, --nIter <arg>``` Number of tree growth iterations (default: 50)  
 ```-snv, --probSNV <arg>``` Per node probablity of generating a descendant cell population with an acquired SNV during a tree growth iteration (default: 0.15)  
-```-cnv, --probCNV <arg>   ``` Per node probablity of generating a descendant cell population with an acquired CNV during a tree growth iteration (default: 0)  
+```-cnv, --probCNV <arg>   ``` Per node probablity of generating a descendant cell population with an acquired CNV during a tree growth iteration (default: 0.02)  
 ```-probDeath <arg>        ``` true, "Probablity of a cell population death in each tree growth iteration; dead cell populations will not be expanded in subsequent iterations and will not be sampled from (default: 0.06)  
 ```-maxPopulationSize <arg>``` Maximum size of a cell population (default: 1000000)  
 ```-minNodes <arg>         ``` Minimum number of undead cell population nodes in a valid tree, tree growth will continue beyond the defined number of iterations until this value is reached (default: 10)  
+```-maxNodes <arg>         ``` Maximum number of undead cell population nodes in a tree, tree growth will stop after the iteration in which this value is reached/first surpassed (default: 1000)
 		
 ##### SAMPLING
 
@@ -44,7 +45,7 @@ Example of a simulated tree with 14 tumor samples:
 ```-dir, --outputDir <arg>``` Directory where the output files should be created [required]  
 ```-dot``` Produce DOT files for the simulated trees  
 ```-sdot, --sampledDot``` Produce DOT files for the simulated trees with indicated samples  
-```-sampleProfile``` "Output VAF file includes an additional column with the binary sample profile for each SNV  
+```-sampleProfile``` Include an additional column with the binary sample profile for each SNV in the VAF output file
 		
 ##### OTHER
 
@@ -61,11 +62,17 @@ From the release/ directory:
 
 ### Examples
 
+Simulate 50 trees; extract 10 and 15 samples; generate VAFs for coverages of 1,000X and 10,000X; produce the dot files for visualization:
+```
+./pomegranate -dir output_dir -t 50 -s 10 15 -c 1000 10000 -dot -sdot -v
+```
+
+Simulate the default 100 trees; extract 5, 10, and 15 samples; set the normal contamination in each sample to a random value between 10% and 40%:
+```
+./pomegranate -dir output_dir -s 5 10 15 -minNC 10 -maxNC 40 -dot -sdot -v
+```
+
 ### Output 
-
-### Output Visualization
-
-
 
 ### System Requirements
 
