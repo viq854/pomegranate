@@ -9,6 +9,10 @@ Multiple samples can then be collected from the produced lineage tree(s). Each s
 
 The program outputs the produced trees, sampled subclones, and the per sample VAFs of each SNV for specified coverage(s), sequencing accuracy, and normal contamination.
 
+Simulated tree example with sampling: 
+
+![tree]( https://github.com/viq854/pomegranate/blob/master/data/examples/t1_s10.png "Simulated tree")
+
 ### Program Parameters
 
 ##### TREE SIMULATION
