@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pomegranate by viq854</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Pomegranate</h1>
+        <p class="header">Lineage tree simulator</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/viq854/pomegranate/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/viq854/pomegranate/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/viq854/pomegranate">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/viq854">viq854</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a id="pomegranate-cancer-lineage-tree-simulator" class="anchor" href="#pomegranate-cancer-lineage-tree-simulator" aria-hidden="true"><span class="octicon octicon-link"></span></a>POMEGRANATE: Cancer Lineage Tree Simulator</h1>
+
+<h3>
+<a id="about" class="anchor" href="#about" aria-hidden="true"><span class="octicon octicon-link"></span></a>About</h3>
+
+<p>POMEGRANATE simulates tumor progression from normal tissue producing a branching hierarchy of monoclonal cell populations in accordance with the branched-tree cancer evolution model. Starting with the GL cell population, the simulator iteratively expands the lineage tree by introducing (with some given probability) new daughter cell populations corresponding to newly acquired somatic SNV or CNV events. In particular, in every iteration, each cell population present in the tree can give rise to a new population of cells (with a randomly generated size) representing a new SNV or CNV event, as well as undergo cell death. The user can specify the number of tree growth iterations, as well the probabilities for each event. Each simulated SNV is randomly associated with a genome location (chromosome and position) and haplotype; the CNVs are associated with a chromosome arm and haplotype and currently correspond to a duplication of this chromosome arm. This process results in lineage trees with an arbitrary number of branches and nodes. </p>
+
+<p>Multiple samples can then be collected from the produced lineage tree(s). Each sample consists of several cell populations (nodes) of the tree, where each such cell population represents a subclone in the sample. The randomized sampling process selects a random subset of nodes from the tree for each sample. Given a selected subset of cell populations, the sample is then created by obtaining a fraction of the cells from each population by sampling from a multinomial distribution with probabilities corresponding to the cell population sizes. </p>
+
+<p>The program outputs the produced trees, sampled subclones, and the per sample VAFs of each SNV for specified coverage(s), sequencing accuracy, and normal contamination.</p>
+
+<p>Example of a simulated tree with 9 collected tumor samples indicated by different colors; each node represents a cell population that contains every mutation in its lineage; gray indicates dead cell populations.: </p>
+
+<p><img src="https://github.com/viq854/pomegranate/blob/master/data/examples/t3_s10.png" alt="tree" title="Simulated tree example"></p>
+
+<p>Example of a simulated tree with 14 tumor samples: </p>
+
+<p><img src="https://github.com/viq854/pomegranate/blob/master/data/examples/t1_s15.png" alt="tree" title="Simulated tree example"></p>
+
+<h3>
+<a id="program-parameters" class="anchor" href="#program-parameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Program Parameters</h3>
+
+<h5>
+<a id="tree-simulation" class="anchor" href="#tree-simulation" aria-hidden="true"><span class="octicon octicon-link"></span></a>TREE SIMULATION</h5>
+
+<p><code>-t, --nTrees &lt;arg&gt;</code> Number of trees to simulate (default: 100)<br>
+<code>-i, --nIter &lt;arg&gt;</code> Number of tree growth iterations (default: 50)<br>
+<code>-snv, --probSNV &lt;arg&gt;</code> Per node probablity of generating a descendant cell population with an acquired SNV during a tree growth iteration (default: 0.15)<br>
+<code>-cnv, --probCNV &lt;arg&gt;</code> Per node probablity of generating a descendant cell population with an acquired CNV during a tree growth iteration (default: 0.02)<br>
+<code>-probDeath &lt;arg&gt;</code> true, "Probablity of a cell population death in each tree growth iteration; dead cell populations will not be expanded in subsequent iterations and will not be sampled from (default: 0.06)<br>
+<code>-maxPopulationSize &lt;arg&gt;</code> Maximum size of a cell population (default: 1000000)<br>
+<code>-minNodes &lt;arg&gt;</code> Minimum number of undead cell population nodes in a valid tree, tree growth will continue beyond the defined number of iterations until this value is reached (default: 10)<br>
+<code>-maxNodes &lt;arg&gt;</code> Maximum number of undead cell population nodes in a tree, tree growth will stop after the iteration in which this value is reached/first surpassed (default: 1000)</p>
+
+<h5>
+<a id="sampling" class="anchor" href="#sampling" aria-hidden="true"><span class="octicon octicon-link"></span></a>SAMPLING</h5>
+
+<p><code>-s, --nSamples &lt;arg&gt;</code> Number of samples to collect, accepts multiple values, e.g. 5 10 15 (default: 5)<br>
+<code>-c, --coverage &lt;arg&gt;</code> Simulated coverage to generate the VAFs, accepts multiple values, e.g. 500 1000 (default: 1000)<br>
+<code>-maxSubclones &lt;arg&gt;</code> "Max number of subclones per sample; the acutal number of subclones is randomly drawn from 1 to maxSubclones (default: 5)<br>
+<code>-sampleSize &lt;arg&gt;</code> Sample size (default: 100000)<br>
+<code>-e &lt;arg&gt;</code> Sequencing error (default: 0.001)<br>
+<code>-minNC &lt;arg&gt;</code> Minimum percentage of normal contamination per sample; the percentage will be randomly generated from the range [minNC maxNC] for each sample (default: 0) (default: 0)<br>
+<code>-maxNC &lt;arg&gt;</code> Maximum percentage of normal contamination per sample; if maxNC &lt; minNC, maxNC will be automatically set to minNC; the percentage will be randomly generated from the range [minNC maxNC] for each sample (default: 20) </p>
+
+<h5>
+<a id="inputoutputvisualization" class="anchor" href="#inputoutputvisualization" aria-hidden="true"><span class="octicon octicon-link"></span></a>INPUT/OUTPUT/VISUALIZATION</h5>
+
+<p><code>-dir, --outputDir &lt;arg&gt;</code> Directory where the output files should be created [required]<br>
+<code>-dot</code> Produce DOT files for the simulated trees<br>
+<code>-sdot, --sampledDot</code> Produce DOT files for the simulated trees with indicated samples<br>
+<code>-sampleProfile</code> Include an additional column with the binary sample profile for each SNV in the VAF output file</p>
+
+<h5>
+<a id="other" class="anchor" href="#other" aria-hidden="true"><span class="octicon octicon-link"></span></a>OTHER</h5>
+
+<p><code>-v, --verbose</code> Verbose mode<br>
+<code>-h, --help</code> Print usage  </p>
+
+<h3>
+<a id="how-to-run" class="anchor" href="#how-to-run" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to Run</h3>
+
+<p>From the <code>release/</code> directory:</p>
+
+<pre><code>./pomegranate -dir &lt;output&gt; [options]
+</code></pre>
+
+<h3>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h3>
+
+<p>(1) Simulate 50 trees; extract 10 and 15 samples; generate VAFs for coverages of 1,000X and 10,000X; produce the dot files for visualization; output files will be created inside the output_dir directory:</p>
+
+<pre><code>./pomegranate -dir output_dir -t 50 -s 10 15 -c 1000 10000 -dot -sdot -v
+</code></pre>
+
+<p>(2) Simulate the default 100 trees; extract 5, 10, and 15 samples; set the normal contamination in each sample to a random value between 10% and 40%:</p>
+
+<pre><code>./pomegranate -dir output_dir -s 5 10 15 -minNC 10 -maxNC 40 -dot -sdot -v
+</code></pre>
+
+<h3>
+<a id="output" class="anchor" href="#output" aria-hidden="true"><span class="octicon octicon-link"></span></a>Output</h3>
+
+<p>A directory called <code>simulation_results/</code> will be created inside the output directory specified by the user. Data files associated with each simulated tree will be stored inside in separate directories. For instance, the results for example (1) above are shown below. Here the top simulation directory contains 50 subdirectories for each simulated tree. </p>
+
+<pre><code>simulation_results/
+├── tree_0
+│   ├── TREE_plain.txt
+│   ├── TREE.dot
+│   ├── TREE_s10.dot
+│   ├── TREE_s15.dot
+│   ├── VAF_s10_10000X.txt
+│   ├── VAF_s10_1000X.txt
+│   ├── VAF_s10_true.txt
+│   ├── VAF_s15_10000X.txt
+│   ├── VAF_s15_1000X.txt
+│   └── VAF_s15_true.txt
+│   ├── SUBCLONES_s10.txt
+│   ├── SUBCLONES_s15.txt
+├── tree_1
+├── tree_2
+├── tree_3
+├── tree_4
+├── tree_5
+├── tree_6
+├── tree_7
+├── tree_8
+└── tree_9
+├── tree_10
+├── tree_11
+├── tree_12
+...
+├── tree_44
+├── tree_45
+├── tree_46
+├── tree_47
+├── tree_48
+├── tree_49
+</code></pre>
+
+<p>Several files are produced for each tree. The <code>TREE_plain.txt</code> file stores the topology of the tree (as a list of edges and nodes) and the information about each simulated mutation. The <code>.dot</code> files store the tree in DOT format that can be visualized using Graphviz. The <code>TREE_s10.dot</code> and <code>TREE_s15.dot</code> display which cell populations were sampled for the 10 and 15 samples experiments, respectively. To visualize these files, the following command can be used (this will produce a pdf file with the same name):</p>
+
+<p><code>dot -Tpdf simulation_results/tree_0/TREE_s10.dot -O</code>  </p>
+
+<p>The <code>VAF</code>-prefixed files contain the multi-sample variant allele frequency (VAF) information for each sampled SNV. Separate files are generated for the different coverages (e.g. 1,000X and 10,000X). The <code>VAF_..._true.txt</code> contains the actual VAF of each SNV across the samples. For example, this is a fragment of a file containing SNVs from 15 samples at 1000X coverage:</p>
+
+<pre><code>#chrom  pos     desc    normal  sample1 sample2 sample3 sample4 sample5 sample6 sample7 sample8 sample9
+2       54659465        M114    0       0.0003  0.0005  0.0001  0.0004  0.0632  0.0003  0.0002  0.0001  0.0004
+11      106272044       M0      0       0.0708  0.2293  0.2298  0.3559  0.1852  0.1897  0.2192  0.1927  0.3789
+22      19631012        M15     0       0.0758  0.0264  0.0561  0.1175  0.0743  0.1923  0.0319  0.007   0.2515
+6       22699228        M50     0       0.0006  0.0003  0.0004  0.0846  0.0283  0.0003  0.0004  0.0003  0.1314
+12      72038217        M64     0       0.0005  0       0.0002  0.1089  0.0004  0.0002  0.0008  0.0006  0.0003
+17      67681707        M9      0       0.0717  0.0254  0.0531  0.1106  0.0751  0.2013  0.0437  0.0651  0.2391
+4       180672416       M11     0       0.0007  0.2094  0.0003  0.0004  0.0002  0.0002  0.0002  0.0003  0.0003
+7       26582817        M54     0       0.165   0.0005  0.0007  0.0003  0.0003  0.0004  0.0001  0.0001  0
+21      33290675        M41     0       0.0003  0.0001  0.1186  0.0001  0       0.0001  0.0749  0.049   0.0004
+14      86616439        M151    0       0.0001  0.0002  0.0589  0.0004  0.0002  0.0001  0.0006  0.0002  0.0002
+1       128266807       M37     0       0.1723  0.0865  0.0221  0.0003  0.1642  0       0.0006  0.0355  0.0003
+13      19210482        M21     0       0.0004  0.0002  0.0003  0.0003  0.0003  0.0003  0.0007  0.0157  0.0003
+11      17572309        M63     0       0.0005  0.0251  0.0002  0.0002  0.0003  0.0004  0.0004  0.0003  0.0003
+4       122102509       M66     0       0.0008  0.0002  0.0004  0.0002  0.0003  0.0005  0.017   0.0002  0.0001
+9       70202460        M10     0       0.0005  0.0002  0.1204  0.0005  0.0002  0.0002  0.0986  0.0696  0.0001
+18      33116420        M60     0       0.0705  0.0003  0.0008  0.0008  0.0113  0.0002  0.0003  0.0076  0.0001
+3       69139413        M161    0       0.0004  0.0003  0.0078  0.0001  0.0006  0.0003  0.0004  0.0006  0.0005
+</code></pre>
+
+<p>Finally the <code>SUBCLONES</code>-prefixed files contain information about the composition of each cell population sampled from the tree. </p>
+
+<h3>
+<a id="system-requirements" class="anchor" href="#system-requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>System Requirements</h3>
+
+<p>Java Runtime Environment (JRE) 1.6<br>
+(Optional) Graphviz: for output tree and sampling visualization </p>
+
+<h3>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h3>
+
+<p>MIT License </p>
+
+<h3>
+<a id="support" class="anchor" href="#support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support</h3>
+
+<p>For help running the program or any questions/suggestions/bug reports, please contact Victoria Popic at <a href="mailto:viq@stanford.edu">viq@stanford.edu</a></p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
